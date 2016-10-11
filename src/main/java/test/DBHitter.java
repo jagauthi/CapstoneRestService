@@ -4,44 +4,62 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.Properties;
 
 public class DBHitter {
 	
+	Connection conn;
+	
 	public DBHitter()
 	{
-		
+		conn = null;
+		try{
+			Class.forName("com.mysql.jdbc.Driver");
+			Properties properties = new Properties();
+			properties.setProperty("user", "dao");
+			properties.setProperty("password", "password");
+			properties.setProperty("useSSL", "false");
+			conn = DriverManager.getConnection("jdbc:mysql://uaf134404.ddns.uark.edu:3306/TestDB", properties);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 
-	public String getRows(String name)
+	public DataPacket[] getRows(String username)
 	{
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			Connection conn = null;
-			conn = DriverManager.getConnection("jdbc:mysql://uaf134404.ddns.uark.edu:3306/TestDB", name, "password");
+		try {			
 			Statement stmt = conn.createStatement() ;
-			String query = "select * from DataTable;" ;
+			String query = "select * from DataTable where username = '" + username + "';" ;
 			ResultSet rs = stmt.executeQuery(query) ;
-			String result = "";
-			if(rs.next())
-			{
-				result = rs.getString("value1");
-				conn.close();
+			
+			int resultSetSize = 0;
+			try {
+			    rs.last();
+			    resultSetSize = rs.getRow();
+			    rs.beforeFirst();
 			}
-			else
-			{
-				result = "No results";
-				conn.close();
+			catch(Exception e) {
+				e.printStackTrace();
 			}
-			return result;
-			/*
-			Statement stmt = conn.createStatement() ;
-			String query = "select * from DataTable ;" ;
-			ResultSet rs = stmt.executeQuery(query) ;
-			*/
+			
+			DataPacket[] packets = new DataPacket[resultSetSize];
+			int counter = 0;
+			while(rs.next())
+			{
+				packets[counter] = new DataPacket(rs.getString("username"), rs.getDate("date").toString(), 
+											rs.getInt("value1"), rs.getInt("value2"), rs.getInt("value3"));
+				counter++;
+			}
+			conn.close();
+			return packets;
 		} 
 		catch (Exception e) {
 			e.printStackTrace();
-			return e.toString();
+			DataPacket[] errorPacketArray = new DataPacket[1];
+			errorPacketArray[0] = new DataPacket("error...;)", "1776-07-04", 6, 6, 6);
+			return errorPacketArray;
 		}
 	}
 }
