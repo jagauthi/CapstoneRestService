@@ -76,11 +76,11 @@ public class DBHitter {
 		}
 	}
 	
-	public PreferencePacket[] getPreferences(String username)
+	public PreferencePacket[] getPreferences(int userID)
 	{
 		try {			
 			Statement stmt = conn.createStatement() ;
-			String query = "select * from Preferences p, UserAccounts u where p.userID = u.userID AND u.username = '" + username + "';" ;
+			String query = "select * from Preferences where userID = " + userID + ";" ;
 			ResultSet rs = stmt.executeQuery(query) ;
 			
 			int resultSetSize = 0;
@@ -107,6 +107,41 @@ public class DBHitter {
 			e.printStackTrace();
 			PreferencePacket[] errorPacketArray = new PreferencePacket[1];
 			errorPacketArray[0] = new PreferencePacket(0, "error...;)", "1776-07-04", 0);
+			return errorPacketArray;
+		}
+	}
+	
+	public FoodPacket[] getAllFood()
+	{
+		try {			
+			Statement stmt = conn.createStatement() ;
+			String query = "select f1.typeName, f2.foodName from FoodTypes f1, Foods f2 where f1.typeID = f2.foodType;";
+			ResultSet rs = stmt.executeQuery(query) ;
+			
+			int resultSetSize = 0;
+			try {
+			    rs.last();
+			    resultSetSize = rs.getRow();
+			    rs.beforeFirst();
+			}
+			catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			FoodPacket[] packets = new FoodPacket[resultSetSize];
+			int counter = 0;
+			while(rs.next())
+			{
+				packets[counter] = new FoodPacket(rs.getString("typeName"), rs.getString("foodName"));
+				counter++;
+			}
+			conn.close();
+			return packets;
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+			FoodPacket[] errorPacketArray = new FoodPacket[1];
+			errorPacketArray[0] = new FoodPacket("error...;)", "1776-07-04");
 			return errorPacketArray;
 		}
 	}

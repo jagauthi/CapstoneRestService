@@ -39,9 +39,15 @@ public class DataController {
     }
     
     @RequestMapping(value = "/getPreferences", method = RequestMethod.GET, produces = "application/json")
-    public PreferencePacket[] getPreferences(@RequestParam(value="username") String name) {
+    public PreferencePacket[] getPreferences(@RequestParam(value="userID") int userID) {
     	DBHitter dao = new DBHitter();
-        return dao.getPreferences(name);
+        return dao.getPreferences(userID);
+    }
+    
+    @RequestMapping(value = "/getAllFood", method = RequestMethod.GET, produces = "application/json")
+    public FoodPacket[] getAllFood() {
+    	DBHitter dao = new DBHitter();
+        return dao.getAllFood();
     }
 }
 
