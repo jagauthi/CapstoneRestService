@@ -186,12 +186,22 @@ public class DBHitter {
 	
 	public int addPreference(int userID, String foodType, String foodName, int rating)
 	{
-		try {			
+		try {	
+			DayOfWeek day = zonedDateTime.getDayOfWeek();	
 			Statement stmt = conn.createStatement() ;
-			String query = "insert into Preferences (userID, foodType, foodName, rating) values (" 
-								+ userID + ", '" + foodType + "', '" + foodName + "', + " + rating + ");" ;
-			int numRowsAffected = stmt.executeUpdate(query) ;
-			return numRowsAffected;
+			String query = "select userID, foodType, foodName, " + day + " from Preferences where userID = " + userID + " and foodType = '" + foodType + "' and '" + foodName + "');
+			ResultSet rs = stmt.executeQuery(query);
+			rs.beforeFirst();
+			if(rs.next()) {
+				int dayCount = Integer.parseInt(rs.getString(day)) + 1;
+				query = "update Preferences set rating=" + rating + ", " + day + "=" + dayCount + " where userID = " + userID + " and foodType = '" + foodType + "' and '" + foodName + "');
+				return stmt.executeUpdate(query);
+			}
+			else {
+				query = "insert into Preferences (userID, foodType, foodName, rating) values ("	+ userID + ", '" + foodType + "', '" + foodName + "', + " + rating + ");" ;
+				int numRowsAffected = stmt.executeUpdate(query) ;
+				return numRowsAffected;
+			}
 		} 
 		catch (Exception e) {
 			e.printStackTrace();
