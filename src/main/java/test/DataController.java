@@ -94,7 +94,7 @@ public class DataController {
     }
 
     @RequestMapping(value = "/addFriend", method=RequestMethod.GET, produces = "application/json")
-    public boolean addFriend(@RequestParam("fromID") int fromID, @RequestParam("toID") int toID) throws SQLException{
+    public int addFriend(@RequestParam("fromID") int fromID, @RequestParam("toID") int toID) throws SQLException{
         DBHitter dao = new DBHitter();
         return dao.addFriend(fromID, toID);
     }

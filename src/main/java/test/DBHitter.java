@@ -297,12 +297,12 @@ public class DBHitter {
 		return packets;
 	}
 
-	public boolean addFriend(int fromID, int toID) throws SQLException{
-		String query = "insert into FriendRequests (userID, friendID) values " + "(" + Integer.toString(fromID) + ", " + Integer.toString(toID) + " )";
+	public int addFriend(int fromID, int toID) throws SQLException{
+		String query = "insert into FriendRequests (fromID, toID) values " + "(" + Integer.toString(fromID) + ", " + Integer.toString(toID) + " )";
 		Statement stmt = conn.createStatement();
-		ResultSet rs = stmt.executeQuery(query);
-		rs.beforeFirst();
-		return rs.next();
+		int numResults = stmt.executeUpdate(query);
+		
+		return numResults;
 	}
 
 }
