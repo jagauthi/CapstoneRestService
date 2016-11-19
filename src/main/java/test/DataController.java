@@ -106,9 +106,9 @@ public class DataController {
     }
 
     @RequestMapping(value="/getRequests", method=RequestMethod.GET, produces = "application/json")
-    public FriendRequestPacket[] getRequests(@RequestParam("userID") int userID) throws SQLException{
+    public FriendRequestPacket[] getRequests(@RequestParam("fromID") int fromID) throws SQLException{
         DBHitter dao = new DBHitter();
-        return dao.getRequests(userID);
+        return dao.getRequests(fromID);
     }
 }
 
