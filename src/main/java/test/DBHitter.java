@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Random;
 
+import org.springframework.stereotype.Repository;
+
 public class DBHitter {
 	
 	Connection conn;
@@ -263,16 +265,16 @@ public class DBHitter {
 		return prefs.get(choice);
 	}
 	
-	public String getFoodType(String foodName) throws SQLException{
+	public FoodPacket getFoodType(String foodName) throws SQLException{
 		Statement stmt = conn.createStatement();
-		String query = "select f1.typeName from FoodTypes f1, Foods f2 where f1.typeID = f2.foodType and f2.foodName = '" + foodName + "';";
+		String query = "select f1.typeName, f2.foodName from FoodTypes f1, Foods f2 where f1.typeID = f2.foodType and f2.foodName = '" + foodName + "';";
 		ResultSet rs = stmt.executeQuery(query);
 		rs.beforeFirst();
-		String result = "";
+		FoodPacket result;
 		if(rs.next())
-			result = rs.getString("typeName");
+			result = new FoodPacket(rs.getString("typeName"), rs.getString("foodName"));
 		else
-			result = "";
+			result = new FoodPacket("No", "Results");
 		
 		return result;
 	}

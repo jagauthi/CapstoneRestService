@@ -3,6 +3,7 @@ package test;
 import java.sql.SQLException;
 import java.util.Collections;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.couchbase.core.query.Query;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,7 +45,7 @@ public class DataController {
     @RequestMapping(value = "/addAccount", method = RequestMethod.GET, produces = "application/json")
     public int addRow(@RequestParam(value="username") String name, @RequestParam(value="password") String password, @RequestParam(value="email") String email) {
     	DBHitter dao = new DBHitter();
-        return dao.addAccount(name, password, email);
+    	return dao.addAccount(name, password, email);
     }
     
     @RequestMapping(value = "/getPreferences", method = RequestMethod.GET, produces = "application/json")
@@ -61,7 +62,7 @@ public class DataController {
 
     @RequestMapping(value = "/getSuggestion", method = RequestMethod.GET, produces = "application/json")
     public PreferencePacket getSuggestion(@RequestParam(value="userID") int userID) throws SQLException{
-        DBHitter dao = new DBHitter();
+    	DBHitter dao = new DBHitter();
         return dao.getSuggestion(userID);
     }
 
@@ -70,25 +71,25 @@ public class DataController {
     							@RequestParam(value="foodType") String foodType,
     							@RequestParam(value="foodName") String foodName,
     							@RequestParam(value="rating") int rating) throws SQLException{
-        DBHitter dao = new DBHitter();
+    	DBHitter dao = new DBHitter();
         return dao.addPreference(userID, foodType, foodName, rating);
     }
     
     @RequestMapping(value = "/getNewSuggestion", method = RequestMethod.GET, produces = "application/json")
     public PreferencePacket getNewSuggestion() throws SQLException{
-        DBHitter dao = new DBHitter();
+    	DBHitter dao = new DBHitter();
         return dao.getNewSuggestion();
     }
     
     @RequestMapping(value = "/getFoodType", method = RequestMethod.GET, produces = "application/json")
-    public String getFoodType(@RequestParam(value="foodName") String foodName) throws SQLException{
-        DBHitter dao = new DBHitter();
+    public FoodPacket getFoodType(@RequestParam(value="foodName") String foodName) throws SQLException{
+    	DBHitter dao = new DBHitter();
         return dao.getFoodType(foodName);
     }
 
     @RequestMapping(value = "/searchUsersByName", method =RequestMethod.GET, produces = "application/json")
     public FriendPacket[] searchUsersByName(@RequestParam("username") String username) throws SQLException{
-        DBHitter dao = new DBHitter();
+    	DBHitter dao = new DBHitter();
         return dao.searchUsersByName(username);
     }
 }
