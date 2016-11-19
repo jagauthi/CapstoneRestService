@@ -65,6 +65,11 @@ public class DataController {
         DBHitter dao = new DBHitter();
         return dao.addPreference(userID, foodType, foodName, rating);
     }
+    @RequestMapping(value = "/getNewSuggestion", method = RequestMethod.GET, produces = "application/json")
+    public PreferencePacket getNewSuggestion() throws SQLException{
+        DBHitter dao = new DBHitter();
+        return dao.getNewSuggestion();
+    }
 }
 
 
