@@ -276,4 +276,23 @@ public class DBHitter {
 		
 		return result;
 	}
+
+	public FriendPacket[] searchUsersByName(String username) throws SQLException{
+		String query = "select * from UserAccounts where username = '" + username + "'";
+		Statement stmt = conn.createStatement();
+		ResultSet rs = stmt.executeQuery(query);
+
+		rs.last();
+		int size = rs.getRow();
+		rs.beforeFirst();
+		int counter = 0;
+		FriendPacket[] packets = new FriendPacket[size];
+		while(rs.next()){
+			packets[counter] = new FriendPacket(rs.getString("username"), rs.getInt("userID"));
+			counter++;
+		}
+		conn.close();
+		return packets;
+	}
+
 }

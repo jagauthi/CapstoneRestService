@@ -3,6 +3,8 @@ package test;
 import java.sql.SQLException;
 import java.util.Collections;
 
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.couchbase.core.query.Query;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -82,6 +84,12 @@ public class DataController {
     public String getFoodType(@RequestParam(value="foodName") String foodName) throws SQLException{
         DBHitter dao = new DBHitter();
         return dao.getFoodType(foodName);
+    }
+
+    @RequestMapping(value = "/searchUsersByName", method =RequestMethod.GET, produces = "application/json")
+    public FriendPacket[] searchUsersByName(@RequestParam("username") String username) throws SQLException{
+        DBHitter dao = new DBHitter();
+        return dao.searchUsersByName(username);
     }
 }
 
