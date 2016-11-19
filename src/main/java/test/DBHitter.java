@@ -155,6 +155,7 @@ public class DBHitter {
 			return errorPacketArray;
 		}
 	}
+	
 	public PreferencePacket getSuggestion(int userID) throws SQLException{
 		Statement stmt = conn.createStatement();
 		ZonedDateTime zonedDateTime = ZonedDateTime.now();
@@ -171,15 +172,30 @@ public class DBHitter {
 			double val = (.6 * (rs.getInt("rating"))) + (.4 * (rs.getInt(dayString)));
 			sum += val;
 			totals.add(sum);
-			prefs.add(new PreferencePacket(rs.getString("foodName"), rs.getString("foodType")));
+			prefs.add(new PreferencePacket(rs.getString("foodType"), rs.getString("foodName")));
 		}
 		Random rand = new Random();
 		double choice = rand.nextDouble() * sum;
-		for(int i = 0; i < totals.size();i++){
-			if(choice > totals.get(i)){
+		for(int i = 0; i < totals.size(); i++) {
+			if(choice < totals.get(i)){
 				return prefs.get(i);
 			}
 		}
-		return null;
+		return new PreferencePacket("test", "" + choice);
+	}
+	
+	public int addPreference(int userID, String foodType, String foodName, int rating)
+	{
+		try {			
+			Statement stmt = conn.createStatement() ;
+			String query = "insert into Preferences (userID, foodType, foodName, rating) values (" 
+								+ userID + ", '" + foodType + "', '" + foodName + "', + " + rating + ");" ;
+			int numRowsAffected = stmt.executeUpdate(query) ;
+			return numRowsAffected;
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
 	}
 }
