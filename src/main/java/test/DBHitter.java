@@ -316,4 +316,11 @@ public class DBHitter {
 		return numResults;
 	}
 
+	public int acceptRequest(int userID, int friendID) throws SQLException{
+		String query = "insert ignore into Friends (userID, friendID) values (" + Integer.toString(userID) + ", " + Integer.toString(friendID) + ")";
+		Statement stmt = conn.createStatement();
+		int numResults = stmt.executeUpdate(query);
+		return numResults;
+	}
+
 }
