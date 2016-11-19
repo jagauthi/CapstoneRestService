@@ -218,7 +218,7 @@ public class DBHitter {
 		List<PreferencePacket> prefs = new ArrayList<>();
 		rs.beforeFirst();
 		while(rs.next()){
-			prefs.add(new PreferencePacket(rs.getString("foodName"), rs.getString("foodType")));
+			prefs.add(new PreferencePacket(rs.getString("foodType"), rs.getString("foodName")));
 		}
 		Random rand = new Random();
 		int choice = rand.nextInt(prefs.size());
