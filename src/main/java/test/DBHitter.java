@@ -72,6 +72,41 @@ public class DBHitter {
 		}
 	}
 	
+	public UserPacket[] getAccountsByEmail(String email)
+	{
+		try {			
+			Statement stmt = conn.createStatement() ;
+			String query = "select * from UserAccounts where email = '" + email + "';" ;
+			ResultSet rs = stmt.executeQuery(query) ;
+			
+			int resultSetSize = 0;
+			try {
+			    rs.last();
+			    resultSetSize = rs.getRow();
+			    rs.beforeFirst();
+			}
+			catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			UserPacket[] packets = new UserPacket[resultSetSize];
+			int counter = 0;
+			while(rs.next())
+			{
+				packets[counter] = new UserPacket(rs.getInt("userID"), rs.getString("username"), rs.getString("password"), rs.getString("email"));
+				counter++;
+			}
+			conn.close();
+			return packets;
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+			UserPacket[] errorPacketArray = new UserPacket[1];
+			errorPacketArray[0] = new UserPacket(0, "error...;)", "1776-07-04", ":O");
+			return errorPacketArray;
+		}
+	}
+	
 	public int addAccount(String username, String password, String email)
 	{
 		try {			
@@ -191,15 +226,18 @@ public class DBHitter {
 			DayOfWeek day = zonedDateTime.getDayOfWeek();	
 			Statement stmt = conn.createStatement() ;
 			String query = "select userID, foodType, foodName, " + days.get(day.getValue()-1) + " from Preferences where userID = " + userID + " and foodType = '" + foodType + "' and foodName = '" + foodName + "';";
+			System.out.println(query);
 			ResultSet rs = stmt.executeQuery(query);
 			//rs.beforeFirst();
 			if(rs.next()) {
 				int dayCount = Integer.parseInt(rs.getString(days.get(day.getValue()-1))) + 1;
 				query = "update Preferences set rating=" + rating + ", " + days.get(day.getValue()-1) + "=" + dayCount + " where userID = " + userID + " and foodType = '" + foodType + "' and foodName = '" + foodName + "';";
+				System.out.println(query);
 				return stmt.executeUpdate(query);
 			}
 			else {
 				query = "insert into Preferences (userID, foodType, foodName, rating, " + days.get(day.getValue()-1) + ") values (" + userID + ", '" + foodType + "', '" + foodName + "', " + rating + ", 1);" ;
+				System.out.println(query);
 				int numRowsAffected = stmt.executeUpdate(query) ;
 				return numRowsAffected;
 			}
@@ -218,7 +256,7 @@ public class DBHitter {
 		List<PreferencePacket> prefs = new ArrayList<>();
 		rs.beforeFirst();
 		while(rs.next()){
-			prefs.add(new PreferencePacket(rs.getString("foodName"), rs.getString("foodType")));
+			prefs.add(new PreferencePacket(rs.getString("foodType"), rs.getString("foodName")));
 		}
 		Random rand = new Random();
 		int choice = rand.nextInt(prefs.size());

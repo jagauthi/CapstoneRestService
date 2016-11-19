@@ -33,6 +33,12 @@ public class DataController {
         return dao.getAccounts(name);
     }
     
+    @RequestMapping(value = "/getAccountsByEmail", method = RequestMethod.GET, produces = "application/json")
+    public UserPacket[] getAccountsByEmail(@RequestParam(value="email") String email) {
+    	DBHitter dao = new DBHitter();
+        return dao.getAccountsByEmail(email);
+    }
+    
     @RequestMapping(value = "/addAccount", method = RequestMethod.GET, produces = "application/json")
     public int addRow(@RequestParam(value="username") String name, @RequestParam(value="password") String password, @RequestParam(value="email") String email) {
     	DBHitter dao = new DBHitter();
