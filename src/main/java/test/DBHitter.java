@@ -189,12 +189,12 @@ public class DBHitter {
 		try {	
 			DayOfWeek day = zonedDateTime.getDayOfWeek();	
 			Statement stmt = conn.createStatement() ;
-			String query = "select userID, foodType, foodName, " + day + " from Preferences where userID = " + userID + " and foodType = '" + foodType + "' and '" + foodName + "');
+			String query = "select userID, foodType, foodName, " + day + " from Preferences where userID = " + userID + " and foodType = '" + foodType + "' and '" + foodName + "');";
 			ResultSet rs = stmt.executeQuery(query);
 			rs.beforeFirst();
 			if(rs.next()) {
 				int dayCount = Integer.parseInt(rs.getString(day)) + 1;
-				query = "update Preferences set rating=" + rating + ", " + day + "=" + dayCount + " where userID = " + userID + " and foodType = '" + foodType + "' and '" + foodName + "');
+				query = "update Preferences set rating=" + rating + ", " + day + "=" + dayCount + " where userID = " + userID + " and foodType = '" + foodType + "' and '" + foodName + "');";
 				return stmt.executeUpdate(query);
 			}
 			else {
