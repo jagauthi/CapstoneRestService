@@ -341,6 +341,7 @@ public class DBHitter {
 		int counter = 0;
 		while(rs.next()){
 			packets[counter] = new FriendRequestPacket(fromID, rs.getInt("userID"), rs.getString("username"));
+			counter++;
 		}
 		conn.close();
 		return packets;
