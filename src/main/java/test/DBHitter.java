@@ -262,4 +262,18 @@ public class DBHitter {
 		int choice = rand.nextInt(prefs.size());
 		return prefs.get(choice);
 	}
+	
+	public String getFoodType(String foodName) throws SQLException{
+		Statement stmt = conn.createStatement();
+		String query = "select f1.typeName from FoodTypes f1, Foods f2 where f1.typeID = f2.foodType and f2.foodName = '" + foodName + "';";
+		ResultSet rs = stmt.executeQuery(query);
+		rs.beforeFirst();
+		String result = "";
+		if(rs.next())
+			result = rs.getString("typeName");
+		else
+			result = "";
+		
+		return result;
+	}
 }

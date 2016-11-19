@@ -71,10 +71,17 @@ public class DataController {
         DBHitter dao = new DBHitter();
         return dao.addPreference(userID, foodType, foodName, rating);
     }
+    
     @RequestMapping(value = "/getNewSuggestion", method = RequestMethod.GET, produces = "application/json")
     public PreferencePacket getNewSuggestion() throws SQLException{
         DBHitter dao = new DBHitter();
         return dao.getNewSuggestion();
+    }
+    
+    @RequestMapping(value = "/getFoodType", method = RequestMethod.GET, produces = "application/json")
+    public String getFoodType(@RequestParam(value="foodName") String foodName) throws SQLException{
+        DBHitter dao = new DBHitter();
+        return dao.getFoodType(foodName);
     }
 }
 
