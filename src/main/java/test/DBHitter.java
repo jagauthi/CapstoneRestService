@@ -198,4 +198,19 @@ public class DBHitter {
 			return 0;
 		}
 	}
+
+	public PreferencePacket getNewSuggestion() throws SQLException{
+		Statement stmt = conn.createStatement();
+		String query = "select * from Preferences";
+		ResultSet rs = stmt.executeQuery(query);
+		rs.beforeFirst();
+		List<PreferencePacket> prefs = new ArrayList<>();
+		rs.beforeFirst();
+		while(rs.next()){
+			prefs.add(new PreferencePacket(rs.getString("foodName"), rs.getString("foodType")));
+		}
+		Random rand = new Random();
+		int choice = rand.nextInt(prefs.size());
+		return prefs.get(choice);
+	}
 }

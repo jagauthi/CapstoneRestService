@@ -56,10 +56,10 @@ public class DataController {
         DBHitter dao = new DBHitter();
         return dao.getSuggestion(userID);
     }
-    
+
     @RequestMapping(value = "/addPreference", method = RequestMethod.GET, produces = "application/json")
-    public int addPreference(@RequestParam(value="userID") int userID, 
-    							@RequestParam(value="foodType") String foodType, 
+    public int addPreference(@RequestParam(value="userID") int userID,
+    							@RequestParam(value="foodType") String foodType,
     							@RequestParam(value="foodName") String foodName,
     							@RequestParam(value="rating") int rating) throws SQLException{
         DBHitter dao = new DBHitter();
