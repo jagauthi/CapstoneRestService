@@ -330,7 +330,8 @@ public class DBHitter {
 	}
 
 	public FriendRequestPacket[] getRequests(int userID) throws SQLException{
-		String query = "select * from FriendRequests where userID=" + Integer.toString(userID);
+//		String query = "select * from FriendRequests where userID=" + Integer.toString(userID);
+		String query = "select * from UserAccounts where userID in (select toID from FriendRequests where fromID =" + Integer.toString(userID) + ")";
 		Statement stmt = conn.createStatement();
 		ResultSet rs = stmt.executeQuery(query);
 		rs.last();
@@ -339,7 +340,7 @@ public class DBHitter {
 		rs.beforeFirst();
 		int counter = 0;
 		while(rs.next()){
-			packets[counter] = new FriendRequestPacket(rs.getInt("userID"), rs.getInt("friendID"));
+			packets[counter] = new FriendRequestPacket(rs.getInt("userID"), rs.getInt("friendID"), rs.getString("username"));
 		}
 		conn.close();
 		return packets;
