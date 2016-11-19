@@ -298,9 +298,20 @@ public class DBHitter {
 	}
 
 	public int addFriend(int fromID, int toID) throws SQLException{
-		String query = "insert into FriendRequests (fromID, toID) values " + "(" + Integer.toString(fromID) + ", " + Integer.toString(toID) + " )";
+
+		String query = "select * from FriendRequests where fromID = " + Integer.toString(fromID) + " and toID=" + Integer.toString(toID);
 		Statement stmt = conn.createStatement();
-		int numResults = stmt.executeUpdate(query);
+		ResultSet rs = stmt.executeQuery(query);
+		int numResults = 0;
+		rs.beforeFirst();
+		if(!rs.next()){
+			query = "insert into FriendRequests (fromID, toID) values " + "(" + Integer.toString(fromID) + ", " + Integer.toString(toID) + " )";
+			stmt = conn.createStatement();
+			numResults = stmt.executeUpdate(query);
+		}
+
+
+
 		
 		return numResults;
 	}
