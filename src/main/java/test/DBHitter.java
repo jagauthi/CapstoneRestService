@@ -355,4 +355,11 @@ public class DBHitter {
 		return packets;
 	}
 
+	public Integer deleteRequest(int fromID, int toID) throws SQLException{
+		String query = "delete from FriendRequests where fromID=" + Integer.toString(fromID) + " and toID=" + Integer.toString(toID);
+		Statement stmt = conn.createStatement();
+		int rowsAffected = stmt.executeUpdate(query);
+		return rowsAffected;
+	}
+
 }

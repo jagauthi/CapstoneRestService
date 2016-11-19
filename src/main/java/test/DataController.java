@@ -110,6 +110,12 @@ public class DataController {
         DBHitter dao = new DBHitter();
         return dao.getRequests(fromID);
     }
+
+    @RequestMapping(value="/deleteRequest", method=RequestMethod.GET, produces="application/json")
+    public Integer deleteRequest(@RequestParam("fromID") int fromID, @RequestParam("toID") int toID)throws SQLException{
+        DBHitter dao = new DBHitter();
+        return dao.deleteRequest(fromID, toID);
+    }
 }
 
 
