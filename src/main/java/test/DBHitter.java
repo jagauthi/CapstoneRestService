@@ -198,7 +198,7 @@ public class DBHitter {
 				return stmt.executeUpdate(query);
 			}
 			else {
-				query = "insert into Preferences (userID, foodType, foodName, rating) values ("	+ userID + ", '" + foodType + "', '" + foodName + "', + " + rating + ");" ;
+				query = "insert into Preferences (userID, foodType, foodName, rating, " + day + ") values (" + userID + ", '" + foodType + "', '" + foodName + "', " + rating + ", 1);" ;
 				int numRowsAffected = stmt.executeUpdate(query) ;
 				return numRowsAffected;
 			}
