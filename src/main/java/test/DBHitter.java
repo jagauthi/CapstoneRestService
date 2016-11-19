@@ -1,15 +1,18 @@
 package test;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
+import java.time.DayOfWeek;
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
+import java.util.Random;
 
 public class DBHitter {
 	
 	Connection conn;
-	
+
+	List<String> days = new ArrayList<>();
 	public DBHitter()
 	{
 		conn = null;
@@ -25,6 +28,13 @@ public class DBHitter {
 		{
 			e.printStackTrace();
 		}
+		days.add("monday");
+		days.add("tuesday");
+		days.add("wednesday");
+		days.add("thursday");
+		days.add("friday");
+		days.add("saturday");
+		days.add("sunday");
 	}
 
 	public UserPacket[] getAccounts(String username)
@@ -117,7 +127,7 @@ public class DBHitter {
 			Statement stmt = conn.createStatement() ;
 			String query = "select f1.typeName, f2.foodName from FoodTypes f1, Foods f2 where f1.typeID = f2.foodType;";
 			ResultSet rs = stmt.executeQuery(query) ;
-			
+
 			int resultSetSize = 0;
 			try {
 			    rs.last();
@@ -144,5 +154,32 @@ public class DBHitter {
 			errorPacketArray[0] = new FoodPacket("error...;)", "1776-07-04");
 			return errorPacketArray;
 		}
+	}
+	public PreferencePacket getSuggestion(int userID) throws SQLException{
+		Statement stmt = conn.createStatement();
+		ZonedDateTime zonedDateTime = ZonedDateTime.now();
+		DayOfWeek day = zonedDateTime.getDayOfWeek();
+		String dayString = days.get(day.getValue()-1);
+
+		String query = "select * from Preferences where userID=" + Integer.toString(userID);
+		List<Double> totals = new ArrayList<>();
+		List<PreferencePacket> prefs = new ArrayList<>();
+		double sum = 0;
+		ResultSet rs = stmt.executeQuery(query);
+		rs.beforeFirst();
+		while(rs.next()){
+			double val = (.6 * (rs.getInt("rating"))) + (.4 * (rs.getInt(dayString)));
+			sum += val;
+			totals.add(sum);
+			prefs.add(new PreferencePacket(rs.getString("foodName"), rs.getString("foodType")));
+		}
+		Random rand = new Random();
+		double choice = rand.nextDouble() * sum;
+		for(int i = 0; i < totals.size();i++){
+			if(choice > totals.get(i)){
+				return prefs.get(i);
+			}
+		}
+		return null;
 	}
 }

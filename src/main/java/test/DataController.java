@@ -1,5 +1,6 @@
 package test;
 
+import java.sql.SQLException;
 import java.util.Collections;
 
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -48,6 +49,12 @@ public class DataController {
     public FoodPacket[] getAllFood() {
     	DBHitter dao = new DBHitter();
         return dao.getAllFood();
+    }
+
+    @RequestMapping(value = "/getSuggestion", method = RequestMethod.GET, produces = "application/json")
+    public PreferencePacket getSuggestion(@RequestParam(value="userID") int userID) throws SQLException{
+        DBHitter dao = new DBHitter();
+        return dao.getSuggestion(userID);
     }
 }
 
