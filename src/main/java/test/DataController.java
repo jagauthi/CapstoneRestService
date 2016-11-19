@@ -104,6 +104,12 @@ public class DataController {
         DBHitter dao = new DBHitter();
         return dao.acceptRequest(userID, friendID);
     }
+
+    @RequestMapping(value="/getRequests", method=RequestMethod.GET, produces = "application/json")
+    public FriendRequestPacket[] getRequests(@RequestParam("userID") int userID) throws SQLException{
+        DBHitter dao = new DBHitter();
+        return dao.getRequests(userID);
+    }
 }
 
 

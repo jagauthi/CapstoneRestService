@@ -329,4 +329,20 @@ public class DBHitter {
 		return numResults;
 	}
 
+	public FriendRequestPacket[] getRequests(int userID) throws SQLException{
+		String query = "select * from FriendRequests where userID=" + Integer.toString(userID);
+		Statement stmt = conn.createStatement();
+		ResultSet rs = stmt.executeQuery(query);
+		rs.last();
+		int size = rs.getRow();
+		FriendRequestPacket[] packets = new FriendRequestPacket[size];
+		rs.beforeFirst();
+		int counter = 0;
+		while(rs.next()){
+			packets[counter] = new FriendRequestPacket(rs.getInt("userID"), rs.getInt("friendID"));
+		}
+		conn.close();
+		return packets;
+	}
+
 }
