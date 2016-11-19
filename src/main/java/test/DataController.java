@@ -27,8 +27,23 @@ public class DataController {
 	}
 
     @RequestMapping(value = "/getAccounts", method = RequestMethod.GET, produces = "application/json")
-    public DataPacket[] getRows(@RequestParam(value="username") String name) {
+    public UserPacket[] getRows(@RequestParam(value="username") String name) {
     	DBHitter dao = new DBHitter();
         return dao.getAccounts(name);
     }
+    
+    @RequestMapping(value = "/addAccount", method = RequestMethod.GET, produces = "application/json")
+    public int addRow(@RequestParam(value="username") String name, @RequestParam(value="password") String password, @RequestParam(value="email") String email) {
+    	DBHitter dao = new DBHitter();
+        return dao.addAccount(name, password, email);
+    }
+    
+    @RequestMapping(value = "/getPreferences", method = RequestMethod.GET, produces = "application/json")
+    public PreferencePacket[] getPreferences(@RequestParam(value="username") String name) {
+    	DBHitter dao = new DBHitter();
+        return dao.getPreferences(name);
+    }
 }
+
+
+

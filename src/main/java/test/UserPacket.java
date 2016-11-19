@@ -1,14 +1,21 @@
 package test;
 
-public class DataPacket {
+public class UserPacket {
 	
+	int userID;
 	String username, password, email;
 	
-	public DataPacket(String username, String password, String email)
+	public UserPacket(int userID, String username, String password, String email)
 	{
+		this.userID = userID;
 		this.username = username;
 		this.password = password;
 		this.email = email;
+	}
+	
+	public int getUserID()
+	{
+		return userID;
 	}
 
 	public String getUsername() {
