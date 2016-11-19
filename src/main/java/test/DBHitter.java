@@ -322,20 +322,20 @@ public class DBHitter {
 		return numResults;
 	}
 
-//	public int acceptRequest(int userID, int friendID) throws SQLException{
-//
-//		String query = "select * from Friends where userID = " + Integer.toString(userID) + " and friendID=" + Integer.toString(friendID);
-//		Statement stmt = conn.createStatement();
-//		ResultSet rs = stmt.executeQuery(query);
-//		int numResults = 0;
-//		rs.beforeFirst();
-//		if(!rs.next()) {
-//			query = "insert ignore into Friends (userID, friendID) values (" + Integer.toString(userID) + ", " + Integer.toString(friendID) + ")";
-//			stmt = conn.createStatement();
-//			numResults = stmt.executeUpdate(query);
-//		}
-//		return numResults;
-//	}
+	public int acceptRequest(int userID, int friendID) throws SQLException{
+
+		String query = "select * from Friends where userID = " + Integer.toString(userID) + " and friendID=" + Integer.toString(friendID);
+		Statement stmt = conn.createStatement();
+		ResultSet rs = stmt.executeQuery(query);
+		int numResults = 0;
+		rs.beforeFirst();
+		if(!rs.next()) {
+			query = "insert ignore into Friends (userID, friendID) values (" + Integer.toString(userID) + ", " + Integer.toString(friendID) + ")";
+			stmt = conn.createStatement();
+			numResults = stmt.executeUpdate(query);
+		}
+		return numResults;
+	}
 
 	public FriendRequestPacket[] getRequests(int fromID) throws SQLException{
 //		String query = "select * from FriendRequests where userID=" + Integer.toString(userID);
