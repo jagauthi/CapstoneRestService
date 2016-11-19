@@ -82,7 +82,7 @@ public class DataController {
     }
     
     @RequestMapping(value = "/getFoodType", method = RequestMethod.GET, produces = "application/json")
-    public FoodPacket getFoodType(@RequestParam(value="foodName") String foodName) throws SQLException{
+    public FoodPacket[] getFoodType(@RequestParam(value="foodName") String foodName) throws SQLException{
     	DBHitter dao = new DBHitter();
         return dao.getFoodType(foodName);
     }

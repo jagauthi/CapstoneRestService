@@ -265,16 +265,22 @@ public class DBHitter {
 		return prefs.get(choice);
 	}
 	
-	public FoodPacket getFoodType(String foodName) throws SQLException{
+	public FoodPacket[] getFoodType(String foodName) throws SQLException{
 		Statement stmt = conn.createStatement();
 		String query = "select f1.typeName, f2.foodName from FoodTypes f1, Foods f2 where f1.typeID = f2.foodType and f2.foodName = '" + foodName + "';";
 		ResultSet rs = stmt.executeQuery(query);
 		rs.beforeFirst();
-		FoodPacket result;
+		FoodPacket[] result = new FoodPacket[1];
 		if(rs.next())
-			result = new FoodPacket(rs.getString("typeName"), rs.getString("foodName"));
+		{
+			FoodPacket fp = new FoodPacket(rs.getString("typeName"), rs.getString("foodName"));
+			result[0] = fp;
+		}
 		else
-			result = new FoodPacket("No", "Results");
+		{
+			FoodPacket fp = new FoodPacket("No","Results");
+			result[0] = fp;
+		}
 		
 		return result;
 	}
