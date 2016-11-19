@@ -339,7 +339,7 @@ public class DBHitter {
 
 	public FriendRequestPacket[] getRequests(int fromID) throws SQLException{
 //		String query = "select * from FriendRequests where userID=" + Integer.toString(userID);
-		String query = "select * from UserAccounts where userID in (select toID from FriendRequests where fromID =" + Integer.toString(fromID) + ")";
+		String query = "select * from UserAccounts where userID in (select toID from FriendRequests where toID =" + Integer.toString(fromID) + ")";
 		Statement stmt = conn.createStatement();
 		ResultSet rs = stmt.executeQuery(query);
 		rs.last();
